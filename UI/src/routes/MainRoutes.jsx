@@ -6,6 +6,8 @@ import DashboardLayout from 'layout/Dashboard';
 import ProtectedRoute from '../middleware/ProductedRoute';
 // render- Dashboard
 const DashboardDefault = Loadable(lazy(() => import('pages/dashboard/default')));
+const Settings = Loadable(lazy(() => import('pages/dashboard/settings')));
+const CreateTodo = Loadable(lazy(() => import('pages/dashboard/createTodo')));
 
 // ==============================|| MAIN ROUTING ||============================== //
 
@@ -24,6 +26,14 @@ const MainRoutes = {
         {
           path: '/dashboard',
           element: <DashboardDefault />
+        },
+        {
+          path: '/createtodo',
+          element: <CreateTodo />
+        },
+        {
+          path: '/settings',
+          element: <Settings />
         },
       ]
     }

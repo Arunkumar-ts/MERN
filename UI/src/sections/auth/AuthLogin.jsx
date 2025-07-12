@@ -14,6 +14,7 @@ import InputLabel from '@mui/material/InputLabel';
 import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
+import { toast } from 'react-toastify';
 
 // third-party
 import * as Yup from 'yup';
@@ -49,18 +50,19 @@ export default function AuthLogin() {
   const handleLogin = async (values, { setSubmitting, resetForm  }) => {
     try {
       setIsError(false);
-      const response = await axios.post(`${serverAPI}/api/users/login`,
+      const response = await axios.post(`${serverAPI}/api/auth/login`,
         {
           email: values.email,
           password: values.password
-        });
-      localStorage.setItem("todo_token", response.data.data.token);
+        });        
       localStorage.setItem("userId", response.data.data.userId);
+      localStorage.setItem("todo_token", response.data.data.token);
       resetForm();
-      navigate('/');
+      navigate('/dashboard');
     }
     catch (err) {
       setIsError(true);
+      console.log(err);
     }
     finally{
       setSubmitting(false);

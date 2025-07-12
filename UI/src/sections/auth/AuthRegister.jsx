@@ -12,6 +12,7 @@ import OutlinedInput from '@mui/material/OutlinedInput';
 import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import { toast } from 'react-toastify';
 
 // third-party
 import * as Yup from 'yup';
@@ -56,19 +57,22 @@ export default function AuthRegister() {
   const handleSignUp = async (values, { setSubmitting, resetForm }) => {
     try {
       setIsError(false);
-      const response = await axios.post(`${serverAPI}/api/users/register`,
+      const response = await axios.post(`${serverAPI}/api/auth/register`,
         {
           name: values.userName,
           email: values.email,
           password: values.password
-        });
-      localStorage.setItem("todo_token", response.data.data.token);
-      localStorage.setItem("userId", response.data.data.userId);
-      resetForm();
-      navigate('/login');
-    }
-    catch (err) {
-      setIsError(true);
+        });        
+        resetForm();
+        navigate('/login');
+      }
+      catch (err) {
+      if(err.response.data.message=="Email already registered"){
+        setIsError(true);
+      }
+      else{
+        console.log(err);
+      }
     }
     finally {
       setSubmitting(false);

@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useEffect, useRef, useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 
@@ -23,8 +22,10 @@ import Avatar from 'components/@extended/Avatar';
 import MainCard from 'components/MainCard';
 import Transitions from 'components/@extended/Transitions';
 import IconButton from 'components/@extended/IconButton';
+import {getUser} from '../../../../../controller/user.controller';
 
 // assets
+import PersonIcon from '@mui/icons-material/Person';
 import LogoutOutlined from '@ant-design/icons/LogoutOutlined';
 import avatar1 from 'assets/images/users/avatar-1.png';
 import avatar2 from 'assets/images/users/avatar-2.png';
@@ -46,9 +47,7 @@ function TabPanel({ children, value, index, ...other }) {
 
 export default function Profile() {
   const theme = useTheme();
-  const serverAPI = import.meta.env.VITE_SERVER_API;
-  const navigate = useNavigate();
-  
+  const navigate = useNavigate()
   const anchorRef = useRef(null);
   const [open, setOpen] = useState(false);
   const [user, setUser] = useState(null);
@@ -63,18 +62,13 @@ export default function Profile() {
     setOpen(false);
   };
   
+  async function getUserData() {
+    const response = await getUser();
+    setUser(response)
+  }
+
   useEffect(() => {
-    async function getUser() {
-      try {
-        const userId = localStorage.getItem('userId');
-        const response = await axios.get(`${serverAPI}/api/users/${userId}`);
-        // console.log(response.data.data);
-        setUser(response.data.data)
-      } catch (error) {
-        console.log(error.message);
-      }
-    }
-    getUser();
+    getUserData();
   }, [])
   
   const [value, setValue] = useState(0);
@@ -84,13 +78,13 @@ export default function Profile() {
   };
   
   const handleLogout = () =>{
-    localStorage.removeItem("todo_token");
-    localStorage.removeItem("userId");
+    localStorage.clear();
+    setUser(null)
     navigate('/login');
   }
   
   const userNameLength = user?.name.length;
-  const avatar = userNameLength<3 ? avatar1 : userNameLength<4 ? avatar3 : userNameLength<6 ? avatar2 : userNameLength<8 ? avatar4 :  avatar5 
+  const avatar = userNameLength<3 ? avatar1 : userNameLength<4 ? avatar3 : userNameLength<5 ? avatar2 : userNameLength<7 ? avatar4 : userNameLength<10 ? avatar5 : avatar1 ;
   return (
     <Box sx={{ flexShrink: 0, ml: 0.75 }}>
       <ButtonBase

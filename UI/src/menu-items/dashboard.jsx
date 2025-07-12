@@ -1,10 +1,12 @@
 // assets
 import { DashboardOutlined } from '@ant-design/icons';
 import SettingOutlined from '@ant-design/icons/SettingOutlined';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 // icons
 const icons = {
   DashboardOutlined,
-  SettingOutlined
+  SettingOutlined,
+  AddCircleOutlineIcon
 };
 
 // ==============================|| MENU ITEMS - DASHBOARD ||============================== //
@@ -20,6 +22,14 @@ const dashboard = {
       type: 'item',
       url: '/dashboard',
       icon: icons.DashboardOutlined,
+      breadcrumbs: false
+    },
+    {
+      id: 'addtodo',
+      title: 'Create Todo',
+      type: 'item',
+      url: '/createtodo',
+      icon: icons.AddCircleOutlineIcon,
       breadcrumbs: false
     },
     {

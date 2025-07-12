@@ -54,7 +54,7 @@ export default function Chip(theme) {
         },
         sizeLarge: {
           fontSize: '1rem',
-          height: 40
+          height: 10
         },
         light: {
           ...defaultLightChip,
