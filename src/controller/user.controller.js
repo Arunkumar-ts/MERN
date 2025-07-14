@@ -1,15 +1,11 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+const serverAPI = import.meta.env.VITE_SERVER_API;
 
 export const getUser = async () => {
-    const serverAPI = import.meta.env.VITE_SERVER_API;
-    const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('todo_token');
-    if (!userId) {
-        return;
-    }
     try {
-        const response = await axios.get(`${serverAPI}/api/users/${userId}`,
+        const response = await axios.get(`${serverAPI}/api/users/`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -23,14 +19,9 @@ export const getUser = async () => {
 }
 
 export const updateUser = async (values) => {
-    const serverAPI = import.meta.env.VITE_SERVER_API;
-    const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('todo_token');
-    if (!userId) {
-        return;
-    }
     try {
-        const response = await axios.put(`${serverAPI}/api/users/${userId}`,
+        const response = await axios.put(`${serverAPI}/api/users/`,
             {
                 name: values.name,
                 email: values.email,
@@ -53,20 +44,14 @@ export const updateUser = async (values) => {
 }
 
 export const deleteUser = async () => {
-    const serverAPI = import.meta.env.VITE_SERVER_API;
-    const userId = localStorage.getItem('userId');
     const token = localStorage.getItem('todo_token');
-    if (!userId) {
-        return;
-    }
     try {
-        const response = await axios.delete(`${serverAPI}/api/users/${userId}`,
+        const response = await axios.delete(`${serverAPI}/api/users/`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
                 },
             });
-        localStorage.removeItem('userId');
         localStorage.removeItem('todo_token');
         return response.data.data;
     } catch (error) {

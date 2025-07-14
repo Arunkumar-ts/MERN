@@ -1,17 +1,12 @@
 import axios from 'axios';
 import { toast } from 'react-toastify';
+const serverAPI = import.meta.env.VITE_SERVER_API;
 
 export const getData = async (searchString, page) => {
-  const serverAPI = import.meta.env.VITE_SERVER_API;
-  const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('todo_token');
-  if (!userId) {
-    return;
-  }
   try {
     const response = await axios.post(`${serverAPI}/api/todos/list`,
       {
-        userId,
         pageSize: 10,
         pageIndex: page - 1,
         searchString
@@ -29,12 +24,7 @@ export const getData = async (searchString, page) => {
 }
 
 export const updateTodo = async (id) => {
-  const serverAPI = import.meta.env.VITE_SERVER_API;
-  const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('todo_token');
-  if (!userId && !id) {
-    return;
-  }
   try {
     await axios.get(`${serverAPI}/api/todos/${id}`, {
       headers: {
@@ -49,12 +39,7 @@ export const updateTodo = async (id) => {
 }
 
 export const deleteTodo = async (id) => {
-  const serverAPI = import.meta.env.VITE_SERVER_API;
-  const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('todo_token');
-  if (!userId && !id) {
-    return;
-  }
   try {
     const response = await axios.delete(`${serverAPI}/api/todos/${id}`, {
       headers: {
@@ -70,19 +55,13 @@ export const deleteTodo = async (id) => {
 }
 
 export const createTodo = async (title, dueDate, description) => {
-  const serverAPI = import.meta.env.VITE_SERVER_API;
-  const userId = localStorage.getItem('userId');
   const token = localStorage.getItem('todo_token');
-  if (!userId) {
-    return;
-  }
   try {
     const response = await axios.post(`${serverAPI}/api/todos`,
       {
         title,
         description,
         dueDate,
-        userId
       },
       {
         headers: {

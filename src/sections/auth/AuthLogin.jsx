@@ -47,15 +47,14 @@ export default function AuthLogin() {
     event.preventDefault();
   };
 
-  const handleLogin = async (values, { setSubmitting, resetForm  }) => {
+  const handleLogin = async (values, { setSubmitting, resetForm }) => {
     try {
       setIsError(false);
       const response = await axios.post(`${serverAPI}/api/auth/login`,
         {
           email: values.email,
           password: values.password
-        });        
-      localStorage.setItem("userId", response.data.data.userId);
+        });
       localStorage.setItem("todo_token", response.data.data.token);
       resetForm();
       navigate('/dashboard');
@@ -64,7 +63,7 @@ export default function AuthLogin() {
       setIsError(true);
       console.log(err);
     }
-    finally{
+    finally {
       setSubmitting(false);
     }
   }
@@ -83,8 +82,8 @@ export default function AuthLogin() {
             .test('no-leading-trailing-whitespace', 'Password cannot start or end with spaces', (value) => value === value.trim())
             .max(10, 'Password must be less than 10 characters')
         })}
-        onSubmit={async (values, { setSubmitting, resetForm  }) => {
-          handleLogin(values, { setSubmitting, resetForm  });
+        onSubmit={async (values, { setSubmitting, resetForm }) => {
+          handleLogin(values, { setSubmitting, resetForm });
         }}
       >
         {({ errors, handleBlur, handleChange, touched, values, handleSubmit }) => (
