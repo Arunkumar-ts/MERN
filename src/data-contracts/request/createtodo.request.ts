@@ -8,7 +8,6 @@ export const createTodoSchema = z.object({
     (val) => (typeof val === "string" || val instanceof Date ? new Date(val) : val),
     z.date()
   ),
-  userId: z.string()
 }).strict();
 
 export type createTodo = z.infer<typeof createTodoSchema>;

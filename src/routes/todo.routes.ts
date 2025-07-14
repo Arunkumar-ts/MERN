@@ -10,7 +10,7 @@ const router = Router();
 // GET todos by userId
 router.post("/list", async (req, res) =>{
   try {
-    const result:ReturnResponse = await getTodos(req.body);
+    const result:ReturnResponse = await getTodos(req.user!.id, req.body);
     if (result.success) {
       res.status(201).json(CommonResponse.success(201, result.message, result.data));
     } else {
@@ -25,7 +25,7 @@ router.post("/list", async (req, res) =>{
 // POST todo
 router.post("/", async (req, res) =>{
   try {
-    const result:ReturnResponse = await createTodo(req.body);
+    const result:ReturnResponse = await createTodo(req.user!.id, req.body);
     if (result.success) {
       res.status(201).json(CommonResponse.success(201, result.message, result.data));
     } else {

@@ -6,9 +6,12 @@ import ReturnResponse from '../model/return-response';
 const router = Router();
 
 // Get user by ID
-router.get('/:id', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
-    const result:ReturnResponse = await getUserById(req.params.id);
+    if (!req.user?.id) {
+      res.status(401).json(CommonResponse.error(400, "Unauthorized: No user ID found"));
+    }
+    const result:ReturnResponse = await getUserById(req.user!.id);
     if (result.success) {
       res.status(201).json(CommonResponse.success(201, result.message, result.data));
     } else {
@@ -21,9 +24,12 @@ router.get('/:id', async (req, res) => {
 });
 
 // PUT user by ID
-router.put('/:id', async (req, res) =>{
+router.put('/', async (req, res) =>{
   try {
-    const result:ReturnResponse = await updateUser(req.params.id, req.body);
+    if (!req.user?.id) {
+      res.status(401).json(CommonResponse.error(400, "Unauthorized: No user ID found"));
+    }
+    const result:ReturnResponse = await updateUser(req.user!.id, req.body);
     if (result.success) {
       res.status(201).json(CommonResponse.success(201, result.message, result.data));
     } else {
@@ -36,9 +42,12 @@ router.put('/:id', async (req, res) =>{
 });
 
 // DELETE user by ID
-router.delete('/:id', async(req, res) => {
+router.delete('/', async(req, res) => {
   try {
-    const result:ReturnResponse = await deleteUser(req.params.id);
+    if (!req.user?.id) {
+      res.status(401).json(CommonResponse.error(400, "Unauthorized: No user ID found"));
+    }
+    const result:ReturnResponse = await deleteUser(req.user!.id);
     if (result.success) {
       res.status(201).json(CommonResponse.success(201, result.message, result.data));
     } else {

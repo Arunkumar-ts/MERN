@@ -1,19 +1,18 @@
 import { Todo } from "../model/todo.model";
 import { getTodo } from "../data-contracts/response/gettodo.response";
 import { createTodo as createTodoInter, createTodoSchema } from "../data-contracts/request/createtodo.request";
-import { ZodError } from 'zod';
 import { getTodo as getTodoReq, getTodoSchema } from "../data-contracts/request/gettodo.request";
 import { getTodosType } from "../types/gettodos.types";
 import ReturnResponse from "../model/return-response";
 
-export const getTodos = async (req:getTodoReq) =>{
+export const getTodos = async (id:string, req:getTodoReq) =>{
     try {
         const parseResult = await getTodoSchema.safeParseAsync(req); 
         if (!parseResult.success) {
             return ReturnResponse.createFailure("Validation failed", parseResult.error.flatten());
         }
         const returnData = parseResult.data;
-        const userId = returnData.userId;
+        const userId = id;
         const skip = returnData.pageIndex * returnData.pageSize;
         const filter: any = { userId };
         if (returnData.searchString) {
@@ -39,14 +38,14 @@ export const getTodos = async (req:getTodoReq) =>{
     }
 }
 
-export const createTodo = async (req: createTodoInter) =>{   
+export const createTodo = async (id:string, req: createTodoInter) =>{   
     try {
         const parseResult = await createTodoSchema.safeParseAsync(req); 
         if (!parseResult.success) {
             return ReturnResponse.createFailure("Validation failed", parseResult.error.flatten());
         }
         const returnData = parseResult.data;
-        const todo:getTodo = await Todo.create({...returnData});
+        const todo:getTodo = await Todo.create({...returnData, userId:id});
         return ReturnResponse.createSuccess('Todo created successfully!', todo);
 
     } catch (error) {
