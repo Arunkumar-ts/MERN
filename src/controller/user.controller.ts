@@ -13,7 +13,7 @@ export const getUserById = async (id:string): Promise<ReturnResponse> =>{
     if (!user){
         return ReturnResponse.createFailure("User not found");
     }
-    return ReturnResponse.createSuccess("Data fetched successfully!", user);
+    return ReturnResponse.createSuccess("Data fetched successfully!", {name:user.name, email:user.email});
 }
 
 export const updateUser = async (id:string, req:createUserInter): Promise<ReturnResponse> =>{
@@ -42,7 +42,7 @@ export const updateUser = async (id:string, req:createUserInter): Promise<Return
         if (!user){
              return ReturnResponse.createFailure("User not found");
         }
-        return ReturnResponse.createSuccess("User updated successfully", user);
+        return ReturnResponse.createSuccess("User updated successfully", {name:user.name, email:user.email});
     } catch (error) {
         const err = error instanceof Error ? error : new Error("Unknown error");
         return ReturnResponse.createFailure(err.message, { stack: err.stack });
@@ -54,11 +54,11 @@ export const deleteUser = async (id:string) =>{
         if (!mongoose.Types.ObjectId.isValid(id)) {
             return ReturnResponse.createFailure("Invalid user ID format");
         }
-        const user = await User.findByIdAndDelete(id);
+        const user: getUser | null = await User.findByIdAndDelete(id);
         if (!user){
              return ReturnResponse.createFailure("User not found");
         }
-        return ReturnResponse.createSuccess("User deleted successfully!", user);
+        return ReturnResponse.createSuccess("User deleted successfully!", {name:user.name, email:user.email});
     } catch (error) {
         const err = error instanceof Error ? error : new Error("Unknown error");
         return ReturnResponse.createFailure(err.message, { stack: err.stack });
